@@ -1,2 +1,4 @@
-# PalindromicPrimes
-Experiments with Primes that also happen to be Palindromes
+# Primes
+Experiments with Primes, Twin Primes, and those that also happen to be Palindromes.
+
+
