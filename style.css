@@ -1,61 +1,83 @@
 html, body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;
-    background: #012;
-    color: #fff;
-    font-family: "Fira Code", monospace;
-    font-size: 1em;
-  }
-  
-  header {
-    position: sticky;
-    top: 0px;
-    background: #012c;
-    padding: 1em;
-    font-size: 1.5em;
-  }
-  
-  main {
-    width: calc(100% - 4em);
-    max-width: 1024px;
-    margin-inline: auto;
-    padding-inline: 2em;
-  }
-  div {
-    padding-left: 0em;
-    transition: padding 0.2s ease;
-  }
-  div:hover { padding-left: 0.75em; }
-  div:after {
-    content: ' This is a Prime'
-  }
-  div.palindrome:after {
-    content: ' This Prime is Palindromic';
-  }
-  div.twin:after {
-    content: ' This is a Twin Prime';
-  }
-  div.twin.palindrome:after {
-    content: ' This Twin Prime is also Palindromic';
-  }
-  div:after {
-    opacity: 0;
-    color: #fff8;
-    transition: opacity 0.2s ease 0.4s;
-  }
-  div:hover:after { opacity: 1 }
-  
-  div.palindrome { color: #0f0 }
-  div.twin { color: #f0f }
-  div.palindrome.twin {
-    animation: palindrome-twin 2s infinite;
-  }
-  
-  @keyframes palindrome-twin {
-    0% { color: #0f0; }
-    50% { color: #f0f; }
-    100% { color: #0f0; }
-  }
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background: #012;
+  color: #fff;
+  font-family: "Fira Code", monospace;
+  font-size: 1em;
+}
+
+header {
+  position: sticky;
+  top: 0px;
+  background: #012c;
+  padding: 1em;
+  font-size: 1.5em;
+}
+
+main {
+  width: calc(100% - 4em);
+  max-width: 1024px;
+  margin-inline: auto;
+  padding-inline: 2em;
+}
+div {
+  padding-left: 0em;
+  transition: padding 0.2s ease;
+}
+div:hover { padding-left: 0.75em; }
+div:after { content: ' Prime' }
+div.twin:after { content: ' Twin Prime' }
+div.palindrome:after { content: ' Palindromic Prime' }
+div.mersenne:after { content: ' Mersenne Prime' }
+div.twin.palindrome:after { content: ' Palindromic Twin Prime' }
+div.twin.mersenne:after { content: ' Twin Mersenne Prime' }
+div.palindrome.mersenne:after { content: ' Palindromic Mersenne Prime' }
+div.twin.palindrome.mersenne:after { content: ' Palindromic Twin Mersenne Prime' }
+div:after {
+  opacity: 0;
+  color: #fff8;
+  transition: opacity 0.2s ease 0.4s;
+}
+div:hover:after { opacity: 1 }
+
+div.twin { color: #f84 }
+div.palindrome { color: #4f8 }
+div.mersenne { color: #84f }
+div.twin.palindrome {
+  animation: twin-palindrome 2s infinite;
+}
+div.twin.mersenne {
+  animation: twin-mersenne 2s infinite;
+}
+div.palindrome.mersenne {
+  animation: palindrome-mersenne 2s infinite;
+}
+div.twin.palindrome.mersenne {
+  animation: twin-palindrome-mersenne 2s infinite;
+}
+
+@keyframes twin-palindrome {
+  0% { color: #f84; }
+  50% { color: #4f8; }
+  100% { color: #f84; }
+}
+@keyframes twin-mersenne {
+  0% { color: #f84; }
+  50% { color: #84f; }
+  100% { color: #f84; }
+}
+@keyframes palindrome-mersenne {
+  0% { color: #4f8; }
+  50% { color: #84f; }
+  100% { color: #4f8; }
+}
+@keyframes twin-palindrome-mersenne {
+  0% { color: #f84; }
+  33.333% { color: #4f8; }
+  66.667% { color: #84f; }
+  100% { color: #f84; }
+}

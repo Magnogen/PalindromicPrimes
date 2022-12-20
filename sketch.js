@@ -62,6 +62,9 @@ function generate(func) {
           p.classList.add('twin');
           document.querySelector('main').lastChild.classList.add('twin');
         }
+        if (Math.log2(prime+1)%1 == 0) {
+          p.classList.add('mersenne');
+        }
         last = prime;
         document.querySelector('main').appendChild(p);
       }
