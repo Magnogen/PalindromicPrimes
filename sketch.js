@@ -70,11 +70,11 @@ function generate(func) {
       }
     }
     element.addEventListener('scroll', function() {
-      if (element.scrollTop + element.clientHeight >= element.scrollHeight-10) {
+      if (element.scrollTop + element.clientHeight >= element.scrollHeight-innerHeight) {
         load_more();
       }
     });
-    while (element.scrollTop + element.clientHeight >= element.scrollHeight-10) {
+    while (element.scrollTop + element.clientHeight >= element.scrollHeight-innerHeight) {
       load_more();
     }
 
