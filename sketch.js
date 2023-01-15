@@ -1,85 +1,95 @@
-// find all prime numbers with the Sieve of Eratosthenes
-function* sieve() {
-    const primes = [2];
-    yield 2;
+// jshint esversion: 11
+
+const { next_prime, is_prime } = (() => {
+  let primes = [];
+  let prime_hash = {};
   
-    let i = 3;
+  let current = 2;
+  let index = 0;
+  const generate = () => {
     main: while (true) {
-        let j = -1;
-        while (++j < primes.length && primes[j] <= Math.sqrt(i)) {
-            if (i % primes[j] === 0) {
-                i += 2; continue main;
-            }
+      for (let prime of primes) {
+        if (prime > Math.sqrt(current)) break;
+        if (current % prime == 0) {
+          current++;
+          continue main;
         }
+      }
 
-        primes.push(i);
-        yield i;
-
-        i += 2;
+      primes.push(current);
+      prime_hash[current] = true;
+      index++;
+      return current++;
     }
-}
+  };
+  
+  const next_prime = () => {
+    if (index < primes.length) return primes[index++];
+    return generate();
+  };
+  
+  const is_prime = (number) => {
+    while (primes[primes.length-1] < number) generate();
+    return !!prime_hash[number];
+  }
+  
+  return {
+    next_prime,
+    is_prime
+  };
+})();
 
 // check if a number is palindromic
-function is_palindrome(number) {
+const is_palindrome = (number) => {
     const s = String(number);
-  
     return s === s.split('').reverse().join('');
 }
 
-// find all the palindromic primes
-function* palindromic_primes() {
-    const s = sieve();
-    while (true) {
-        const prime = s.next().value;
-        if (is_palindrome(prime)) yield prime;
-    }
-}
-
 // generate the next `amount` of results from given generator.
-function generate(func) {
-    return amount => {
-        let results = [];
-        for (let i = 0; i < amount; i++)
-            results.push(func.next().value);
-        return results;
-    }
+const generate = (func) => amount => {
+  let results = [];
+  for (let i = 0; i < amount; i++)
+    results.push(func());
+  return results;
 }
 
 (async () => {
 
-    const next = generate(sieve());
+    const next = generate(next_prime);
   
-    let element = document.body;
-    let last = -1;
     const load_more = () => {
-      for (let prime of next(20)) {
+      for (let prime of next(10)) {
         let p = document.createElement('div');
         p.innerText = prime;
         if (is_palindrome(prime)) {
           p.classList.add('palindrome');
         }
-        if (last == prime-2) {
+        if (is_prime(prime-2) || is_prime(prime+2)) {
           p.classList.add('twin');
-          document.querySelector('main').lastChild.classList.add('twin');
         }
+        // if (is_prime(prime-6) || is_prime(prime+6)) {
+        //   p.classList.add('sexy');
+        // }
         if (Math.log2(prime+1)%1 == 0) {
           p.classList.add('mersenne');
         }
-        last = prime;
-        document.querySelector('main').appendChild(p);
+        $('main').appendChild(p);
       }
     }
-    element.addEventListener('scroll', function() {
-      if (element.scrollTop + element.clientHeight >= element.scrollHeight-innerHeight) {
+    const body = $('body');
+    body.on('scroll', async () => {
+      $('div#padtop').style.height = body.scrollTop;
+      let last = performance.now();
+      while (body.scrollTop + body.clientHeight > body.scrollHeight-5*innerHeight) {
         load_more();
+        if (performance.now() - last > 1000/70) {
+          await frame();
+          last = performance.now();
+        }
       }
-    });
-    while (element.scrollTop + element.clientHeight >= element.scrollHeight-innerHeight) {
-      load_more();
-    }
+    }); $('body').trigger('scroll');
 
 })();
-
 
 
 
