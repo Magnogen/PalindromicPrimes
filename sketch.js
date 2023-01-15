@@ -78,7 +78,7 @@ const generate = (func) => amount => {
     }
     const body = $('body');
     body.on('scroll', async () => {
-      $('div#padtop').style.height = body.scrollTop;
+      // $('div#padtop').style.height = body.scrollTop;
       let last = performance.now();
       while (body.scrollTop + body.clientHeight > body.scrollHeight-5*innerHeight) {
         load_more();
